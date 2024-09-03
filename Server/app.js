@@ -3,6 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const mongoose = require("./Config/database.js");
 const routes = require("./Routes/userRoutes.js");
+const errorHandler = require("./ErrorMidleware/errorMidleware.js");
 const app = express();
 
 app.use(
@@ -14,4 +15,5 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", routes);
 
+app.use(errorHandler);
 module.exports = app;

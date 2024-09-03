@@ -30,6 +30,9 @@ const SingnUp = () => {
       };
 
       try {
+        // const url = `http://192.168.59.37:8002/adduser`;
+
+        console.log("body data==", body);
         const response = await fetch("http://192.168.10.72:8002/adduser", {
           method: "POST",
           headers: {

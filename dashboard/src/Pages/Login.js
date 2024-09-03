@@ -16,8 +16,8 @@ const Login = () => {
         password: formdata.current.pass.value,
       };
 
-      console.log("body=>", body);
-      const response = await fetch("http://192.168.10.72:8002/user", {
+      const url = `http://192.168.10.72:8002/user`;
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
