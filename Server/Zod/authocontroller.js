@@ -10,6 +10,7 @@ const authoSchema = z.object({
     .string({ required_error: "Invalid password" })
     .trim()
     .min(8, { message: "password must be 8 char " }),
+  isAdmin: z.boolean().optional().default(false),
 });
 
 module.exports = authoSchema;

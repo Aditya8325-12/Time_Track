@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import Loader from "../Componets/Loader";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
-  const [Loading, setLoading] = useState(false);
-  const [erroMessage, seterroMessage] = useState(false);
+  const [Loading, setLoading] = useState(true);
+  const [erroMessage, seterroMessage] = useState("");
   const formdata = useRef();
   const navigate = useNavigate();
   const LoginUser = async (e) => {
@@ -16,7 +16,7 @@ const Login = () => {
         password: formdata.current.pass.value,
       };
 
-      const url = `http://192.168.10.72:8002/user`;
+      const url = `http://192.168.24.37:8002/user`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -33,13 +33,16 @@ const Login = () => {
 
       const userdata = await response.json();
       localStorage.setItem("data", JSON.stringify(userdata.data));
+      localStorage.setItem("token", JSON.stringify(userdata.token));
+
       console.log("Success response =>", userdata);
       navigate("/");
     } catch (error) {
       console.log("Fetch error =>", error);
+      seterroMessage("Server Not Response");
     } finally {
-      setLoading(false);
       setTimeout(() => {
+        setLoading(false);
         seterroMessage("");
       }, 4000);
       formdata.current.reset();

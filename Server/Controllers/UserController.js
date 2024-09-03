@@ -3,9 +3,10 @@ const UserModule = require("../DB_modules/userSchema");
 const bycrpt = require("bcrypt");
 
 exports.adduser = async (req, res) => {
-  console.log("page hit");
   try {
+    console.log("admin == ", req.headers);
     const { name, email, password } = req.body;
+    const isAdmin = req.body.isAdmin;
     if (name !== "" && email !== "" && password !== "") {
       await UserModule(req.body);
       const data = await UserModule.findOne({ email });
@@ -20,6 +21,7 @@ exports.adduser = async (req, res) => {
           name,
           email,
           password,
+          isAdmin,
         })
           .then(() => {
             res
@@ -78,7 +80,8 @@ exports.user = async (req, res) => {
 
     const data = await UserModule.find(
       { email: userdata.email },
-      { password: 0 });
+      { password: 0 }
+    );
 
     res.status(200).json({
       data,

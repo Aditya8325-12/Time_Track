@@ -10,6 +10,7 @@ const SingnUp = () => {
   const [Loading, setLoading] = useState(false);
   const [erroMessage, seterroMessage] = useState("");
   const [SuccessMessage, setSuccessMessage] = useState("");
+
   const SingnUp = async (e) => {
     e.preventDefault();
 
@@ -30,10 +31,8 @@ const SingnUp = () => {
       };
 
       try {
-        // const url = `http://192.168.59.37:8002/adduser`;
-
         console.log("body data==", body);
-        const response = await fetch("http://192.168.10.72:8002/adduser", {
+        const response = await fetch("http://192.168.24.37:8002/adduser", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -55,6 +54,7 @@ const SingnUp = () => {
         navigate("/login");
       } catch (error) {
         console.log("Fetch error =>", error);
+        seterroMessage("servernot responed");
       } finally {
         setLoading(false);
         setTimeout(() => {
@@ -67,7 +67,7 @@ const SingnUp = () => {
 
   return (
     <div className="w-full flex justify-center items-center flex-col gap-7  ">
-      {Loading ? <Loader /> : <div></div>}
+      {Loading ? <Loader className="" /> : <div></div>}
       <div class="w-4/12  p-6 space-y-8 sm:p-8 bg-white my-5 rounded-lg shadow-xl dark:bg-gray-800">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
           Sign Up to Time Track

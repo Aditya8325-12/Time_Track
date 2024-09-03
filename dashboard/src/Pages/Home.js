@@ -15,7 +15,7 @@ const Home = () => {
       />
       <div className=" absolute text-4xl text-center flex flex-col gap-8 ">
         <h1 className="">Hello !</h1>
-        <h1>{data[0].name} </h1>
+        <h1>{data.name} </h1>
       </div>
     </div>
   );

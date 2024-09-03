@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import Login from "./Pages/Login";
 import Header from "./Componets/Header";
 import Footer from "./Componets/Footer";
+import AdminHome from "./Pages/AdminHome";
 
 function App() {
   const location = useLocation();
@@ -12,13 +13,19 @@ function App() {
   // localStorage.setItem("data", JSON.stringify(setdata));
   const showheader =
     location.pathname !== "/login" && location.pathname !== "/signup";
-  const data = localStorage.getItem("data");
+  const data = JSON.parse(localStorage.getItem("data"));
+
 
   return (
     <div className="w-full font-serif ">
       {showheader && data && <Header />}
       <Routes>
-        <Route path="/" element={data ? <Home /> : <Login />} />
+        <Route
+          path="/"
+          element={
+            !data ? <Login /> : data.isAdmin === true ? <AdminHome /> : <Home />
+          }
+        />
         <Route path="/signup" element={<SingnUp />} />
         <Route path="/login" element={<Login />} />
       </Routes>

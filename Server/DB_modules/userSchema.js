@@ -7,6 +7,7 @@ const userSchema = mongoose.Schema({
   name: String,
   email: String,
   password: String,
+  isAdmin: Boolean,
   createDate: {
     type: Date,
     default: Date.now,
@@ -34,10 +35,14 @@ userSchema.pre("save", async function (next) {
 
 userSchema.methods.genrateToken = async function () {
   try {
+    const user = this;
+    console.log("jwt is admin", user.isAdmin);
+
     return jwt.sign(
       {
         user_id: this._id.toString(),
         email: this.email,
+        isAdmin: this.isAdmin,
       },
       process.env.SECRET_KEY,
       {
