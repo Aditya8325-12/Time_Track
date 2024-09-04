@@ -16,7 +16,8 @@ const Login = () => {
         password: formdata.current.pass.value,
       };
 
-      const url = `http://192.168.24.37:8002/user`;
+      const url = `http://${process.env.REACT_APP_IP_ADDRESS}:8002/user`;
+      console.log(url);
       const response = await fetch(url, {
         method: "POST",
         headers: {

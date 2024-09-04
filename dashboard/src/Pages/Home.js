@@ -2,8 +2,8 @@ import React from "react";
 
 const Home = () => {
   const data = JSON.parse(localStorage.getItem("data"));
-  console.log("data", data);
-  // localStorage.clear();
+
+
   return (
     <div className="w-full  relative flex justify-center items-center ">
       <img

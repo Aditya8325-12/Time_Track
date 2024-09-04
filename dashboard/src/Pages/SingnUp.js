@@ -14,7 +14,6 @@ const SingnUp = () => {
   const SingnUp = async (e) => {
     e.preventDefault();
 
-    console.log("form data=>", formdata.current.pass.value);
     if (formdata.current.pass.value !== formdata.current.cpassword.value) {
       formdata.current.pass.value = "";
       formdata.current.cpassword.value = "";
@@ -31,14 +30,16 @@ const SingnUp = () => {
       };
 
       try {
-        console.log("body data==", body);
-        const response = await fetch("http://192.168.24.37:8002/adduser", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
+        const response = await fetch(
+          `http://${process.env.REACT_APP_IP_ADDRESS}:8002/adduser`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();

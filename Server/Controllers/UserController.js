@@ -4,7 +4,6 @@ const bycrpt = require("bcrypt");
 
 exports.adduser = async (req, res) => {
   try {
-    console.log("admin == ", req.headers);
     const { name, email, password } = req.body;
     const isAdmin = req.body.isAdmin;
     if (name !== "" && email !== "" && password !== "") {
@@ -44,6 +43,8 @@ exports.getUserInfo = async (req, res) => {
     const { password, email } = req.body;
     await UserModule(req.body);
     const data = await UserModule.findOne({ email });
+
+    console.log("rep.body", data);
     const match = await bycrpt.compare(password, data.password);
     if (match) {
       res.status(200).send({
@@ -56,7 +57,7 @@ exports.getUserInfo = async (req, res) => {
       res.status(400).send({ message: "pasword does not match" });
     }
   } catch (error) {
-    res.status(400).send({ message: "error Fetching data " });
+    res.status(400).send({ message: "Email id Is InValid " });
   }
 };
 

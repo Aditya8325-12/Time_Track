@@ -15,7 +15,6 @@ function App() {
     location.pathname !== "/login" && location.pathname !== "/signup";
   const data = JSON.parse(localStorage.getItem("data"));
 
-
   return (
     <div className="w-full font-serif ">
       {showheader && data && <Header />}
