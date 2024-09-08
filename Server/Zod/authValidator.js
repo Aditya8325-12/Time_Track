@@ -1,12 +1,19 @@
-const validator = (Schema) => async (req, res, next) => {
+exports.validator = (Schema) => async (req, res, next) => {
   try {
     const parsebody = await Schema.parseAsync(req.body);
     req.body = parsebody;
     next();
   } catch (err) {
     next(err);
-    // res.status(400).json({ message: err.errors[0].message });
   }
 };
 
-module.exports = validator;
+exports.contactValidator = (contactzodSchema) => async (req, res, next) => {
+  try {
+    const parsebody = await contactzodSchema.parseAsync(req.body);
+    req.body = parsebody;
+    next();
+  } catch (err) {
+    next(err);
+  }
+};

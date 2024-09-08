@@ -1,4 +1,4 @@
-const { Types } = require("mongoose");
+
 const bycrpt = require("bcrypt");
 const mongoose = require("../Config/database");
 const jwt = require("jsonwebtoken");

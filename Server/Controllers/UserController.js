@@ -1,7 +1,8 @@
 const mongoose = require("../Config/database");
 const UserModule = require("../DB_modules/userSchema");
+const ContactMoodule = require("../DB_modules/ContactSchema");
 const bycrpt = require("bcrypt");
-
+const emailjs = require("@emailjs/browser");
 exports.adduser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -44,7 +45,6 @@ exports.getUserInfo = async (req, res) => {
     await UserModule(req.body);
     const data = await UserModule.findOne({ email });
 
-    console.log("rep.body", data);
     const match = await bycrpt.compare(password, data.password);
     if (match) {
       res.status(200).send({
@@ -92,3 +92,16 @@ exports.user = async (req, res) => {
     next(error);
   }
 };
+
+exports.AddContact = async (req, res) => {
+  const { name, email, message, phone } = req.body;
+  await ContactMoodule.create({ name, email, message, phone })
+    .then((response) => {
+      res.status(200).json({ message: "request has been saved " });
+    })
+    .catch((err) => {
+      res.status(400).json({ message: "user not created  " });
+    });
+};
+
+

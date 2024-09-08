@@ -1,15 +1,30 @@
 import React from "react";
 import Chart from "react-apexcharts";
-const Example = () => {
+const Example = ({ data }) => {
+  
+  const monthsArray = new Array(6).fill(0);
+
+  data.forEach((item) => {
+    const monthindex = item._id.month - 1;
+    const pairIndex = Math.floor(monthindex / 2);
+    monthsArray[pairIndex] += item.count;
+  });
   const options = {
     chart: {
       id: "basic-bar",
     },
     xaxis: {
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+      categories: [
+        "Jan-Feb",
+        "Mar-Apr",
+        "May-Jun",
+        "Jul-Aug",
+        "Sep-Oct",
+        "Nov-Dec",
+      ],
     },
     title: {
-      text: "Monthly Sales",
+      text: "Users",
       align: "center",
     },
   };
@@ -17,13 +32,13 @@ const Example = () => {
   const series = [
     {
       name: "Sales",
-      data: [30, 40, 45, 50, 49, 60],
+      data: monthsArray,
     },
   ];
 
   return (
     <div>
-      <Chart options={options} series={series} type="bar" />
+      <Chart options={options} series={series} type="bar" height={400} />
     </div>
   );
 };

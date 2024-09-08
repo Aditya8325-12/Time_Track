@@ -10,13 +10,13 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:3000",
+    // origin: "http://localhost:3001",
   })
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", routes);
 app.use("/admin", adminRoutes);
-
 
 app.use("/", routes);
 app.use("/admin", adminRoutes);

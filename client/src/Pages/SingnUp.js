@@ -67,7 +67,7 @@ const SingnUp = () => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center flex-col gap-7  ">
+    <div className="w-full flex justify-center items-center flex-col gap-7  ">
       {Loading ? <Loader className="" /> : <div></div>}
       <div class="w-4/12  p-6 space-y-8 sm:p-8 bg-white my-5 rounded-lg shadow-xl dark:bg-gray-800">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">

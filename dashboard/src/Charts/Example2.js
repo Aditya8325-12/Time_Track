@@ -31,8 +31,8 @@ const Example2 = () => {
   const series = [44, 55, 67, 83];
 
   return (
-    <div id="chart" className="h-64 w-11/12">
-      <Chart options={options} series={series} type="radialBar" />
+    <div id="chart" className=" w-11/12">
+      <Chart options={options} series={series} type="radialBar" height={400} />
     </div>
   );
 };

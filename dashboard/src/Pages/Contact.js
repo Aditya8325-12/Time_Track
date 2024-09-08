@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { GoStop } from "react-icons/go";
-import { FaUser } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
 import Loader from "../Componets/Loader";
 import UserAcess from "../Componets/UserAcess";
-const AllUserPage = () => {
+import { useNavigate } from "react-router-dom";
+import { GoStop } from "react-icons/go";
+const Contact = () => {
   const navigate = useNavigate();
   const [Loading, setLoading] = useState(false);
   const token = JSON.parse(localStorage.getItem("token"));
@@ -15,10 +14,6 @@ const AllUserPage = () => {
 
   const [previwemodule, setpreviwemodule] = useState(false);
   const [previewData, setpreviewData] = useState(null);
-
-  const [UpdateModule, setUpdateModule] = useState(false);
-  const [UpdateName, setUpdateName] = useState("");
-  const [UpdateEmail, setUpdateEmail] = useState("");
 
   const [successModel, setsuccessModel] = useState(false);
   const [successMessege, setsuccessMessege] = useState("");
@@ -32,7 +27,7 @@ const AllUserPage = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const url = `http://${process.env.REACT_APP_IP_ADDRESS}:8002/admin/alluser`;
+      const url = `http://${process.env.REACT_APP_IP_ADDRESS}:8002/admin/getcontact`;
       const response = await fetch(url, {
         method: "get",
         headers: {
@@ -60,7 +55,7 @@ const AllUserPage = () => {
     try {
       console.log("userid ", Userid);
 
-      const url = `http://${process.env.REACT_APP_IP_ADDRESS}:8002/admin/deleteuser`;
+      const url = `http://${process.env.REACT_APP_IP_ADDRESS}:8002/admin/deletecontact`;
       const response = await fetch(url, {
         method: "delete",
         headers: {
@@ -89,59 +84,9 @@ const AllUserPage = () => {
     }
   };
 
-  const updateData = async () => {
-    try {
-      console.log("userid ", Userid);
-      const body = {
-        _id: Userid,
-        name: UpdateName,
-        email: UpdateEmail,
-      };
-      const url = `http://${process.env.REACT_APP_IP_ADDRESS}:8002/admin/updateuser`;
-      const response = await fetch(url, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          _id: Userid,
-          name: UpdateName,
-          email: UpdateEmail,
-        }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        seterroMessage(errorData.message);
-      }
-      const userdata = await response.json();
-      setsuccessMessege(userdata.message);
-      setsuccessModel(true);
-    } catch (error) {
-      console.log("error=>", error.message);
-      seterroMessage(error.message);
-    } finally {
-      await fetchData();
-      setUpdateModule(false);
-      setLoading(false);
-    }
-  };
-
-  const FillupdateForm = (data) => {
-    setUpdateName(data.name);
-    setUpdateEmail(data.email);
-  };
-
   const data = localStorage.getItem("token");
   if (!data) {
     return <UserAcess />;
-  }
-
-  if (Loading) {
-    return (
-      <div className="w-full flex h-96 justify-center items-center">
-        <Loader />
-      </div>
-    );
   }
 
   return (
@@ -1112,23 +1057,19 @@ const AllUserPage = () => {
                 </div>
               </th>
               <th scope="col" className="p-4">
-                Full Name
+                Name
               </th>
-              <th scope="col" className="p-4">
-                User Name
-              </th>
-              {/* <th scope="col" className="p-4">
-                Password
-              </th> */}
               <th scope="col" className="p-4">
                 Email
               </th>
               <th scope="col" className="p-4">
-                Created Date
+                Message
               </th>
-
               <th scope="col" className="p-4">
-                Last Update
+                Phone No
+              </th>
+              <th scope="col" className="p-4">
+                Created Date
               </th>
             </tr>
           </thead>
@@ -1161,54 +1102,20 @@ const AllUserPage = () => {
                   >
                     <div className="flex items-center mr-3">{items.name}</div>
                   </th>
-                  <td className="px-4 py-3">
-                    <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
-                      {items.name}
-                    </span>
-                  </td>
-                  {/* <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    <div className="flex items-center">
-                      {items.password}
-                    </div>
-                  </td> */}
+
                   <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {items.email}
                   </td>
                   <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {items.createDate}
+                    {items.message}
+                  </td>
+                  <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {items.phone}
                   </td>
 
-                  <td className="px-4 py-3">{items.updatedDate}</td>
+                  <td className="px-4 py-3">{items.createDate}</td>
                   <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <div className="flex items-center space-x-4">
-                      <button
-                        onClick={() => {
-                          FillupdateForm(items);
-                          setUpdateModule(true);
-                          setUserid(items._id);
-                        }}
-                        type="button"
-                        data-drawer-target="drawer-update-product"
-                        data-drawer-show="drawer-update-product"
-                        aria-controls="drawer-update-product"
-                        className="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-purple-700 rounded-lg hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4 mr-2 -ml-0.5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                          <path
-                            fillRule="evenodd"
-                            d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        Edit
-                      </button>
                       <button
                         type="button"
                         onClick={() => {
@@ -1361,93 +1268,9 @@ const AllUserPage = () => {
 
       <div
         className={`w-full h-full   absolute justify-center items-center ${
-          previwemodule || deleteView || UpdateModule || successModel
-            ? "flex"
-            : "hidden"
+          previwemodule || deleteView || successModel ? "flex" : "hidden"
         } `}
       >
-        {/* update module */}
-        <div
-          className={`  w-4/12  flex justify-center items-center  ${
-            UpdateModule ? "absolute" : "hidden"
-          } `}
-        >
-          <div class="relative w-full h-auto ">
-            <div class="relative bg-white  rounded-lg shadow-2xl dark:bg-gray-700">
-              <button
-                onClick={() => {
-                  setUpdateModule(false);
-                }}
-                type="button"
-                class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-                data-modal-toggle="delete-modal"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="w-5 h-5"
-                  fill="currentColor"
-                  viewbox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-                <span class="sr-only">Close modal</span>
-              </button>
-              <div class="p-6 w-full flex justify-center items-center flex-col">
-                <label htmlFor="" className="w-full px-2  py-2">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2 outline-none  border-gray-300 border-2 rounded-md"
-                  placeholder="enter email"
-                  required
-                  value={UpdateName}
-                  onChange={(e) => {
-                    setUpdateName(e.target.value);
-                  }}
-                />
-                <label htmlFor="" className="w-full px-2  py-2">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  className="w-full px-3 py-2 outline-none  border-gray-300 border-2 rounded-md"
-                  placeholder="enter email"
-                  required
-                  value={UpdateEmail}
-                  onChange={(e) => {
-                    setUpdateEmail(e.target.value);
-                  }}
-                />
-                <div className="w-full flex justify-start mt-4 items-center gap-3 ">
-                  <button
-                    data-modal-toggle="delete-modal"
-                    type="button"
-                    onClick={() => {
-                      updateData();
-                    }}
-                    class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                  >
-                    Update Data
-                  </button>
-                  <button
-                    data-modal-toggle="delete-modal"
-                    type="button"
-                    class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-                  >
-                    No, cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* delete module */}
         <div
           className={`  w-4/12  flex justify-center items-center  ${
@@ -1542,14 +1365,19 @@ const AllUserPage = () => {
                   </svg>
                   <span class="sr-only">Close modal</span>
                 </button>
-                <div class="p-6 text-center w-full flex justify-center items-center flex-col">
-                  <FaUser class="w-24 h-24 mb-3  rounded-full shadow-2xl" />
-                  <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
-                    {previewData.name}
+                <div class="p-6  w-full flex justify-center items-start flex-col">
+                  <h5 class="mb-1 text-xl text-green-400 font-medium text-gray-900 dark:text-white">
+                    Name : {previewData.name}
                   </h5>
-                  <span class="text-sm text-gray-500 dark:text-gray-400">
-                    {previewData.email}
-                  </span>
+                  <h5 class="mb-1 text-xl font-medium text-purple-400 text-gray-900 dark:text-white">
+                    Email : {previewData.email}
+                  </h5>
+                  <h5 class="mb-1 text-xl font-medium text-gray-900 text-red-400 dark:text-white">
+                    Message : {previewData.message}
+                  </h5>
+                  <h5 class="mb-1 text-xl font-medium text-gray-900 text-gray-600 dark:text-white">
+                    Phone : {previewData.phone}
+                  </h5>
                 </div>
               </div>
             </div>
@@ -1625,4 +1453,4 @@ const AllUserPage = () => {
   );
 };
 
-export default AllUserPage;
+export default Contact;

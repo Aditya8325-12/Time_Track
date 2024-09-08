@@ -16,9 +16,8 @@ const Login = () => {
         password: formdata.current.pass.value,
       };
 
-      console.log("body === ", body);
       const url = `http://${process.env.REACT_APP_IP_ADDRESS}:8002/user`;
-      console.log("url === ", url);
+      console.log(url);
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -52,7 +51,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center flex-col  relative">
+    <div className="w-full h-screen flex justify-center items-center flex-col  relative">
       <div class=" w-4/12  p-6 space-y-8 sm:p-8 bg-white mt-4  rounded-lg shadow-xl dark:bg-gray-800">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
           Sign in to Flowbite
